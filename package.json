@@ -1,0 +1,17 @@
+{
+  "name": "proyecto-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "console-table-printer": "^2.9.0",
+    "figlet": "^1.5.0",
+    "inquirer": "^8.1.0"
+  }
+}
