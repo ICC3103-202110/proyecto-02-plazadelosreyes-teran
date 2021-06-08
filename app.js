@@ -9,9 +9,15 @@ async function app(state){
         console.log(title)
         printTable(table)
         const {action} = await menu()
-        const {city} = await addCity(model)
-        const {choose} = await chooseCity(model)
-        console.log(action,city,choose)
+        if (action === "Add city"){
+            const {city} = await addCity(model)
+        }
+        if (action === "Delete city"){
+            const {choose} = await chooseCity(model)
+        }
+        if (action === "Update city"){
+            const {choose} = await chooseCity(model)
+        }
     }
 }
 

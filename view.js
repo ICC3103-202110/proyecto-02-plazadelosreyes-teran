@@ -34,7 +34,6 @@ function addCity(){
         {
             name: 'city',
             type: 'input',
-            default: 'none',
             message: message,
         }
     ])
@@ -54,12 +53,22 @@ function chooseCity(model){
 
 function getTable(model){
     const {zones,temperatures,max,min} = model
-    return [
-        {"Name": zones,
-        "Temp": temperatures,
-        "Max": max,
-        "Min": min}
-    ]
+    let i = 0;
+    let len = 0;
+    for (city in zones){
+        len++;
+    }
+    let table = []
+    while (i < len){
+        table.push(
+            {"Name":zones[i],
+            "Temperature":temperatures[i],
+            "Max":max[i],
+            "Min":min[i]}
+        )
+        i++;
+    }
+    return table
 }
 
 function view(model){
