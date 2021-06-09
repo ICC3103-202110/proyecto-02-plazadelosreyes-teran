@@ -1,6 +1,10 @@
 const {menu, addCity,chooseCity} = require('./view')
 const {printTable} = require('console-table-printer')
 
+function index(city,model){
+    return 0;
+}
+
 async function app(state){
     while (true){
         const {model, currentView} = state
