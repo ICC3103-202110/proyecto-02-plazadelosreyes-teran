@@ -28,6 +28,21 @@ function menu(){
     ])
 }
 
+function useApi(){
+    const message = "Would you like to use the Open Weather API?"
+    choices = ['Yes','No']
+    return inquirer.prompt([
+        {
+            name: 'input',
+            type: 'list',
+            message: message,
+            default: "Yes",
+            choices: choices
+        }
+    ])
+}
+
+
 function addCity(){
     const message = 'Location?'
     return inquirer.prompt([
@@ -83,4 +98,5 @@ module.exports = {
     chooseCity,
     addCity,
     menu,
+    useApi
 }

@@ -1,8 +1,15 @@
-const {menu, addCity,chooseCity} = require('./view')
+const {menu, addCity,chooseCity,useApi} = require('./view')
 const {all} = require('./update')
 const {printTable} = require('console-table-printer')
 
 async function app(state,view){
+    const {input} = await useApi()
+    if (input=== "Yes"){
+        return 0;
+    }
+    else{
+        console.log("")   
+    }
     while (true){
         const {model, currentView} = state
         const {title, table} = currentView
