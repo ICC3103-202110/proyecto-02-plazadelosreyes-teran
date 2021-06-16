@@ -1,11 +1,8 @@
 const {menu, addCity,chooseCity} = require('./view')
+const {all} = require('./update')
 const {printTable} = require('console-table-printer')
 
-function index(city,model){
-    return 0;
-}
-
-async function app(state){
+async function app(state,view){
     while (true){
         const {model, currentView} = state
         const {title, table} = currentView
@@ -15,6 +12,10 @@ async function app(state){
         const {action} = await menu()
         if (action === "Add city"){
             const {city} = await addCity(model)
+            state = {
+                model: all(action,state.model,city),
+                currentView: view(model)
+            }
         }
         if (action === "Delete city"){
             const {choose} = await chooseCity(model)
