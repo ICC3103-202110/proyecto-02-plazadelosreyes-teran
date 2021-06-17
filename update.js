@@ -23,8 +23,8 @@ function toCelcius(temp) {
 function getData(city){
     fetch("http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=a07735184058aa8d576e102f191e3cc2")
     .then(response => response.json())
-    .then(data => console.log(toCelcius(data.main.temp),toCelcius(data.main.temp_max),toCelcius(data.main.temp_min)))
-    .catch(err => console.log("City not found."))
+    .then(data => [toCelcius(data.main.temp),toCelcius(data.main.temp_max),toCelcius(data.main.temp_min)])
+    .catch(err => "City not found.")
 }
 
 function all(choice,model,city,mode){
@@ -38,18 +38,21 @@ function all(choice,model,city,mode){
         return model
     }
     if (mode === "No"){
+        if (getData(city) === "City not found"){
+            return "City not found"
+        }
         if (choice === "Add city"){
             model.zones.push(city)
-            model.temperatures.push(Number(addedTemp).toFixed(2))
-            model.max.push(Number(addMax(addedTemp)).toFixed(2))
-            model.min.push(Number(addMin(addedTemp)).toFixed(2))
+            model.temperatures.push(getData(city)[0])
+            model.max.push(getData(city)[1])
+            model.min.push(getData(city)[2])
         }
         if (choice === "Update city"){
             const position = model.zones.indexOf(city)
             const newTemp = addTemp()
-            model.temperatures[position] = (Number(newTemp).toFixed(2))
-            model.max[position] = (Number(addMax(newTemp)).toFixed(2))
-            model.min[position] = (Number(addMin(newTemp)).toFixed(2))
+            model.temperatures[position] = (getData(city)[0])
+            model.max[position] = (getData(city)[1])
+            model.min[position] = (getData(city)[0])
         }
     }
     if (mode === "Yes"){
