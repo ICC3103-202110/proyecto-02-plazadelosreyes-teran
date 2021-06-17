@@ -20,21 +20,21 @@ async function app(state,view){
         if (action === "Add city"){
             const {city} = await addCity(model)
             state = {
-                model: all(action,state.model,city),
+                model: all(action,state.model,city,input),
                 currentView: view(model)
             }
         }
         if (action === "Delete city"){
             const {choose} = await chooseCity(model)
             state = {
-                model: all(action,state.model,choose),
+                model: all(action,state.model,choose,input),
                 currentView: view(model)
             }
         }
         if (action === "Update city"){
             const {choose} = await chooseCity(model)
             state = {
-                model: all(action,state.model,choose),
+                model: all(action,state.model,choose,input),
                 currentView: view(model)
             }
         }
