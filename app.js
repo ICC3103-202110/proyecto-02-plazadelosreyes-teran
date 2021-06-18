@@ -4,6 +4,7 @@ const {printTable} = require('console-table-printer')
 
 async function app(state,view){
     const {input} = await useApi()
+    let count = 0
     while (true){
         const {model, currentView} = state
         const {title, table} = currentView
@@ -14,21 +15,29 @@ async function app(state,view){
         if (action === "Add city"){
             const {city} = await addCity(model)
             state = {
-                model: all(action,state.model,city,input),
+                model: await all(action,state.model,city,input),
                 currentView: view(model)
             }
+            count++
         }
         if (action === "Delete city"){
+            if (count === 0){
+                continue
+            }
             const {choose} = await chooseCity(model)
             state = {
-                model: all(action,state.model,choose,input),
+                model: await all(action,state.model,choose,input),
                 currentView: view(model)
             }
+            count--
         }
         if (action === "Update city"){
+            if (count === 0){
+                continue
+            }
             const {choose} = await chooseCity(model)
             state = {
-                model: all(action,state.model,choose,input),
+                model: await all(action,state.model,choose,input),
                 currentView: view(model)
             }
         }

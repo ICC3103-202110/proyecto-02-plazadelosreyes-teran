@@ -1,4 +1,5 @@
 const fetch = require("node-fetch");
+const axios = require("axios")
 const MAX_TEMP = 40
 const MIN_TEMP = -10
 const CREATE_MAX_ACTUAL = 30 
@@ -16,18 +17,24 @@ function addMin(actualTemp){
     return (Math.random() * (actualTemp - MIN_TEMP) + MIN_TEMP)
 }
 
-function toCelcius(temp) {
+function toCelsius(temp) {
     return Number(temp - 273.15).toFixed(2)
 }
 
-function getData(city){
-    fetch("http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=a07735184058aa8d576e102f191e3cc2")
-    .then(response => response.json())
-    .then(data => [toCelcius(data.main.temp),toCelcius(data.main.temp_max),toCelcius(data.main.temp_min)])
-    .catch(err => "City not found.")
-}
+async function getData(city){
+    return await axios({
+            url: "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=a07735184058aa8d576e102f191e3cc2",
+            method: 'get',
+            timeout: 8000,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+       .then(res => [toCelsius(res.data.main.temp),toCelsius(res.data.main.temp_max),toCelsius(res.data.main.temp_min)])
+       .catch (err => "Not found")
+    }
 
-function all(choice,model,city,mode){
+async function all(choice,model,city,mode){
     const addedTemp = addTemp()
     if (choice === "Delete city"){
         const position = model.zones.indexOf(city)
@@ -37,25 +44,26 @@ function all(choice,model,city,mode){
         model.min.splice(position,1)
         return model
     }
-    if (mode === "No"){
-        if (getData(city) === "City not found"){
+    if (mode === "Yes"){
+        let dataResult = await getData(city)
+        if (dataResult === "City not found"){
             return "City not found"
         }
         if (choice === "Add city"){
             model.zones.push(city)
-            model.temperatures.push(getData(city)[0])
-            model.max.push(getData(city)[1])
-            model.min.push(getData(city)[2])
+            model.temperatures.push(dataResult[0])
+            model.max.push(dataResult[1])
+            model.min.push(dataResult[2])
+            
         }
         if (choice === "Update city"){
             const position = model.zones.indexOf(city)
-            const newTemp = addTemp()
-            model.temperatures[position] = (getData(city)[0])
-            model.max[position] = (getData(city)[1])
-            model.min[position] = (getData(city)[0])
+            model.temperatures[position] = (dataResult[0])
+            model.max[position] = (dataResult[1])
+            model.min[position] = (dataResult[2])
         }
     }
-    if (mode === "Yes"){
+    if (mode === "No"){
         if (choice === "Add city"){
             model.zones.push(city)
             model.temperatures.push(Number(addedTemp).toFixed(2))
