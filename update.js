@@ -22,6 +22,7 @@ function toCelsius(temp) {
 }
 
 async function getData(city){
+    
     return await axios({
             url: "http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=a07735184058aa8d576e102f191e3cc2",
             method: 'get',
@@ -46,7 +47,7 @@ async function all(choice,model,city,mode){
     }
     if (mode === "Yes"){
         let dataResult = await getData(city)
-        if (dataResult === "City not found"){
+        if (dataResult === "Not found"){
             return false
         }
         if (choice === "Add city"){

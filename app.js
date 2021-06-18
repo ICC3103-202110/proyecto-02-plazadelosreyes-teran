@@ -14,8 +14,12 @@ async function app(state,view){
         const {action} = await menu()
         if (action === "Add city"){
             const {city} = await addCity(model)
+            const check = await all(action,state.model,city,input)
+            if (check===false){
+                continue
+            }
             state = {
-                model: await all(action,state.model,city,input),
+                model: check,
                 currentView: view(model)
             }
             count++
