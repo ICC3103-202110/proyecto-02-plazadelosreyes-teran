@@ -47,7 +47,7 @@ async function all(choice,model,city,mode){
     if (mode === "Yes"){
         let dataResult = await getData(city)
         if (dataResult === "City not found"){
-            return "City not found"
+            return false
         }
         if (choice === "Add city"){
             model.zones.push(city)
